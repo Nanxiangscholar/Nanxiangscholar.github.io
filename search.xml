@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hygen</title>
+    <url>/2022/08/31/Hygen/</url>
+    <content><![CDATA[<h1 id="Hygen模板生成器"><a href="#Hygen模板生成器" class="headerlink" title="Hygen模板生成器"></a>Hygen模板生成器</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>安装：<code>npm i -g hygen </code></p>
+<p>初始化hygen：<code>hygen init self</code></p>
+<h2 id="生成"><a href="#生成" class="headerlink" title="生成"></a>生成</h2><p>生成模板：<code>hygen generator new component</code></p>
+<p><img src="https://found-img-blog.oss-cn-hangzhou.aliyuncs.com/img/image-20220831210053873.png" alt="image-20220831210053873"></p>
+<span id="more"></span>
+
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>这里面的<code>.ejs.t</code>后缀文件就是一个个模板</p>
+<ul>
+<li><code>---</code>分割部分标识模板生成路径</li>
+<li><code>&lt;%= name %&gt;</code>表示组件名字，也对应了下文指令</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line"><span class="symbol">to:</span> src/components/&lt;%= name %&gt;/index.js</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> from <span class="string">&#x27;react&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">PropTypes</span> from <span class="string">&#x27;prop-types&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Styled</span>&lt;%= name %&gt; from <span class="string">&#x27;./style&#x27;</span></span><br><span class="line"></span><br><span class="line">function &lt;%= name %&gt;(&#123;</span><br><span class="line">    children,</span><br><span class="line">  ...rest</span><br><span class="line">&#125;)&#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;<span class="title class_">Styled</span>&lt;%= name %&gt; &#123;...rest&#125;&gt;</span><br><span class="line">        children</span><br><span class="line">    &lt;/<span class="title class_">Styled</span>&lt;%= name %&gt;&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;%= name %&gt;.propTypes = &#123;</span><br><span class="line">    <span class="symbol">children:</span><span class="title class_">PropTypes</span>.any</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default &lt;%= name %&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>对于需要大写的模板可以使用内置的方法<ul>
+<li><code>h.changeCase.lcFirst(name)</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line"><span class="symbol">to:</span> src/components/&lt;%= name %&gt;/&lt;%= h.changeCase.lcFirst(name) %&gt;.stories.js</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> from <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &lt;%= name %&gt; from <span class="string">&#x27;.&#x27;</span>;</span><br><span class="line"></span><br><span class="line">export default&#123;</span><br><span class="line">    <span class="symbol">title:</span><span class="string">&quot;&lt;%= name %&gt;&quot;</span>,</span><br><span class="line">    <span class="symbol">component:</span>&lt;%= name %&gt;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export const <span class="title class_">Default</span> = ()=&gt; &lt;&lt;%= name %&gt;&gt;默认&lt;&lt;%= name %&gt;&gt;;</span><br></pre></td></tr></table></figure>
+
+<p>使用对应模板生成内容：</p>
+<p><code>hygen component new Icon</code>    <em>这个Icon是自定义名字</em></p>
+<h2 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h2><p>这个<strong>component</strong>叫做生成器，而<strong>new</strong>叫做action</p>
+<p>一个hygen可以有多个生成器，一个生成器可以有多个action</p>
+<blockquote>
+<p>有趣的是上文中的<code>hygen generator new component</code>叫做生成器的生成器。</p>
+<p>这个Icon对应上文中的<code>&lt;%= name %&gt;</code></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>Hygen</tag>
+        <tag>模板</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Storybook</title>
+    <url>/2022/09/07/Storybook/</url>
+    <content><![CDATA[<h1 id="Storybook"><a href="#Storybook" class="headerlink" title="Storybook"></a>Storybook</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Storybook是帮助前端组件开发的开源工具，可以支持React，Vue，Angular等框架。</p>
+<blockquote>
+<p>它的网站首页这样说道：storybook 为UI组件提供一个独立的沙箱环境，在这里无论是edge case还是难于遇到的状态都可以造出来。可以把use case 像故事一样展现出来。</p>
+</blockquote>
+<p>平常的组件开发，程序猿需要把组件单独放置在一个页面不断的调试，非常不人性化。而storybook就单独为开发人员提供了一个页面，将组件放置在他们提供的页面中清晰可见。</p>
+<p>简单的说，如果我们是开发react组件，就不需要启动react的打包编译启动页面浏览组件，只需要启动storybook为我们内置的页面即可浏览组建</p>
+<p><img src="https://found-img-blog.oss-cn-hangzhou.aliyuncs.com/img/image-20220831232821238.png" alt="image-20220831232821238"></p>
+<span id="more"></span>
+
+<p>这样，单个组件的样式更好的展示出来。而且自动生成组件所需的API表</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>这里我们以<code>React app</code>为例，如何在React脚手架中配置<code>storybook</code></p>
+<p><span style="color:red">注意新旧版本示例文件有所不同!!!</span></p>
+<ul>
+<li>根目录执行：<code>npx -p @storybook/cli sb init</code><ul>
+<li>自动配置项目并生成实例文件，如下：</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://found-img-blog.oss-cn-hangzhou.aliyuncs.com/img/image-20220831233500985.png" alt="image-20220831233500985"></p>
+<ul>
+<li>启动：<code>yarn run storybook</code><ul>
+<li>左边就是组件的目录</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://found-img-blog.oss-cn-hangzhou.aliyuncs.com/img/image-20220831233608493.png" alt="image-20220831233608493"></p>
+<h2 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h2><p>打开<code>Header.stories.jsx</code>文件</p>
+<blockquote>
+<p>我们可以在metadata 里面定义一些参数（parameters）这样可以提供一些配置上的灵活性。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Header</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./Header&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">title</span>: <span class="string">&#x27;Example/Header&#x27;</span>, <span class="comment">//---左侧目录配置</span></span><br><span class="line">  <span class="attr">component</span>: <span class="title class_">Header</span>, <span class="comment">//---指定具体的组件</span></span><br><span class="line">  <span class="attr">parameters</span>: &#123; <span class="comment">//---自定义参数</span></span><br><span class="line">    <span class="attr">layout</span>: <span class="string">&#x27;fullscreen&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">Template</span> = (<span class="params">args</span>) =&gt; <span class="language-xml"><span class="tag">&lt;<span class="name">Header</span> &#123;<span class="attr">...args</span>&#125; /&gt;</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title class_">LoggedIn</span> = <span class="title class_">Template</span>.<span class="title function_">bind</span>(&#123;&#125;);</span><br><span class="line"><span class="title class_">LoggedIn</span>.<span class="property">args</span> = &#123;</span><br><span class="line">  <span class="attr">user</span>: &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;Jane Doe&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title class_">LoggedOut</span> = <span class="title class_">Template</span>.<span class="title function_">bind</span>(&#123;&#125;);</span><br><span class="line"><span class="title class_">LoggedOut</span>.<span class="property">args</span> = &#123;&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>LoggedIn.args</code>是配置组件属性的<em>默认值</em></p>
+<p><img src="https://found-img-blog.oss-cn-hangzhou.aliyuncs.com/img/image-20220831235417873.png" alt="image-20220831235417873"></p>
+<h2 id="配合Styled-components"><a href="#配合Styled-components" class="headerlink" title="配合Styled-components"></a>配合Styled-components</h2><p>配置<strong>Styled-components</strong>主题</p>
+<p>因为storybook是独立于react creat app的，所以需要为storybook再配置一下主题</p>
+<ul>
+<li><p>在<code>.storybook</code>文件下创建<code>preview.js</code>文件</p>
+</li>
+<li><pre><code class="js">import React from &quot;react&quot;;
+import &#123; addDecorator,addParameters &#125; from &quot;@storybook/react&quot;;
+import &#123; ThemeProvider &#125; from &quot;styled-components&quot;;
+import theme from &#39;../src/theme&#39;; //---theme为全局变量配置，类似less的全局变量配置文件
+
+import &#39;story.css&#39;;
+
+addDecorator((storyFn)=&gt;(
+  &lt;ThemeProvider theme=&#123;theme&#125;&gt;&#123;storyFn()&#125;&lt;/ThemeProvider&gt;
+))
+</code></pre>
+</li>
+</ul>
+<h2 id="更多…"><a href="#更多…" class="headerlink" title="更多…"></a>更多…</h2>]]></content>
+      <categories>
+        <category>框架</category>
+        <category>React</category>
+        <category>组件</category>
+      </categories>
+      <tags>
+        <tag>React</tag>
+        <tag>Storybook</tag>
+        <tag>组件开发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>js闭包_深入浅出</title>
+    <url>/2022/09/07/js-closure/</url>
+    <content><![CDATA[<h2 id="简单的对闭包做一个理解："><a href="#简单的对闭包做一个理解：" class="headerlink" title="简单的对闭包做一个理解："></a>简单的对<strong>闭包</strong>做一个理解：</h2><ul>
+<li>闭包产生是：函数内嵌套函数；</li>
+<li>闭包函数在外面被调用，访问；</li>
+<li>闭包能使外部函数访问内部函数的变量；</li>
+<li>闭包可以保持对定义时的作用域的引用，使之不被销毁，就长生不老。</li>
+</ul>
+<h3 id="在看闭包之前我们还需要理解作用域。"><a href="#在看闭包之前我们还需要理解作用域。" class="headerlink" title="在看闭包之前我们还需要理解作用域。"></a>在看闭包之前我们还需要理解<strong>作用域</strong>。</h3><blockquote>
+<p>作用域主要分为两种：全局变量和局部变量。</p>
+</blockquote>
+<span id="more"></span>
+
+<h5 id="全局变量-amp-局部变量"><a href="#全局变量-amp-局部变量" class="headerlink" title="全局变量&amp;局部变量"></a><strong>全局变量&amp;局部变量</strong></h5><p><strong>局部变量</strong>:定义在函数内部，只能在函数中使用的变量，作用范围是从函数开始到结尾，即在<strong>｛｝</strong>里。<br>这里定义的<code>a</code>就是局部变量。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">myTest1</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125; </span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a);<span class="comment">//a is not defined</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>( <span class="title function_">myTest1</span>());<span class="comment">//3</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>全局变量</strong>：常常定义在函数外部，拥有全局作用域，即在 JavaScript 代码的任何地方都可以访问</p>
+<p>这里定义的<code>b</code>就是局部变量。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> b = <span class="number">3</span>;<span class="comment">//全局变量</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">myTest2</span>(<span class="params"></span>)&#123;</span><br><span class="line">     <span class="keyword">return</span> b;</span><br><span class="line"> &#125; </span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b);<span class="comment">//3</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">myTest2</span>());<span class="comment">//3</span></span><br></pre></td></tr></table></figure>
+
+<p>从这里我们就可以知道，函数内部可以调用<strong>全局变量</strong>，但是函数外部无法读取函数内的<strong>局部变量</strong></p>
+<p>函数内部声明变量的时候，必须使用var命令去声明一个变量。如果不用的话，就会声明了一个<strong>全局变量</strong>。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">myTest3</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">var</span> c = <span class="number">4</span>;</span><br><span class="line">    d=<span class="number">3</span>;</span><br><span class="line">    <span class="keyword">return</span> c,d;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>( <span class="title function_">myTest3</span>());<span class="comment">//4,3</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(d);<span class="comment">//3</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(c);<span class="comment">//c is not defined</span></span><br></pre></td></tr></table></figure>
+
+<p>在这里我们<code>c</code>和<code>d</code>都是在函数内部声明的，但是因为<code>c</code>使用了<code>var</code>，而<code>d</code>没有使用<code>var</code>声明，所以在外部能够使用<code>d</code>；也就是所谓的声明了一个<strong>全局变量</strong></p>
+<hr>
+<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><p>在理解了<strong>全局变量</strong>和<strong>局部变量</strong>之后，我们先写一个简单的闭包实例给大家看看：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">myTest4</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">var</span> i = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> func = <span class="title function_">myTest4</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">func</span>());<span class="comment">//4</span></span><br></pre></td></tr></table></figure>
+
+<p>在这里我们是不是有点明白了呢：如果我们想用一个变量或者得到一个变量，但是我们又不想全局声明定义这个变量，到这的时候我们就可以通过闭包来调用函数内部的变量。</p>
+<p>但是我们也应该知道闭包产生的值是一直保存在内存中的。这里通过一个例子给大家看看：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">myTest5</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">var</span> i = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> i++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> func = <span class="title function_">myTest5</span>();</span><br><span class="line"><span class="title function_">func</span>();<span class="comment">//4</span></span><br><span class="line"><span class="title function_">func</span>();<span class="comment">//5</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">func</span>());<span class="comment">//6  </span></span><br></pre></td></tr></table></figure>
+
+<p>这个例子就是说调用一次，然后<code>i</code>的值就变了一次并且会一直被保存，然后下次调用的时候就是上次保存的值了。</p>
+<h5 id="一些闭包实例"><a href="#一些闭包实例" class="headerlink" title="一些闭包实例:"></a>一些闭包实例:</h5><p><strong>&#x2F;* 例子1 *&#x2F;</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">outerFn</span>(<span class="params"></span>)&#123;</span><br><span class="line">  <span class="keyword">var</span> i = <span class="number">0</span>; </span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">innerFn</span>(<span class="params"></span>)&#123;</span><br><span class="line">      i++;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(i);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> innerFn;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> inner = <span class="title function_">outerFn</span>();  <span class="comment">//每次外部函数执行的时候,都会开辟一块内存空间,外部函数的地址不同，都会重新创建一个新的地址</span></span><br><span class="line"><span class="title function_">inner</span>(); <span class="comment">//1</span></span><br><span class="line"><span class="title function_">inner</span>(); <span class="comment">//2</span></span><br><span class="line"><span class="title function_">inner</span>(); <span class="comment">//3</span></span><br><span class="line"><span class="keyword">var</span> inner2 = <span class="title function_">outerFn</span>();</span><br><span class="line"><span class="title function_">inner2</span>(); <span class="comment">//1</span></span><br><span class="line"><span class="title function_">inner2</span>(); <span class="comment">//2</span></span><br><span class="line"><span class="title function_">inner2</span>(); <span class="comment">//3</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>&#x2F;* 例子2 *&#x2F;</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">m1</span>(<span class="params"></span>)&#123;</span><br><span class="line">     <span class="keyword">var</span> x = <span class="number">1</span>;</span><br><span class="line">     <span class="keyword">return</span> <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">          <span class="variable language_">console</span>.<span class="title function_">log</span>(++x);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="title function_">m1</span>()();   <span class="comment">//2</span></span><br><span class="line"><span class="title function_">m1</span>()();   <span class="comment">//2</span></span><br><span class="line"><span class="title function_">m1</span>()();   <span class="comment">//2</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">var</span> m2 = <span class="title function_">m1</span>();</span><br><span class="line"><span class="title function_">m2</span>();   <span class="comment">//2</span></span><br><span class="line"><span class="title function_">m2</span>();   <span class="comment">//3</span></span><br><span class="line"><span class="title function_">m2</span>();   <span class="comment">//4</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>&#x2F;* 例子3 *&#x2F;</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> lis = <span class="variable language_">document</span>.<span class="title function_">getElementsByTagName</span>(<span class="string">&quot;li&quot;</span>);</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;lis.<span class="property">length</span>;i++)&#123;</span><br><span class="line">  (<span class="keyword">function</span>(<span class="params">i</span>)&#123;</span><br><span class="line">      lis[i].<span class="property">onclick</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">           <span class="variable language_">console</span>.<span class="title function_">log</span>(i);</span><br><span class="line">      &#125;;</span><br><span class="line">  &#125;)(i);       <span class="comment">//事件处理函数中闭包的写法</span></span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h6 id=""><a href="#" class="headerlink" title=""></a></h6><h4 id="回收"><a href="#回收" class="headerlink" title="回收"></a>回收</h4><p>由于闭包会使得函数中的变量都被保存在内存中，内存消耗很大，所以不能滥用闭包，否则会造成网页的性能问题，在IE浏览器中可能导致内存泄露。解决方法是，在退出函数之前，将不使用的局部变量全部删除。</p>
+<p>一个简单的回收实例:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">myTest6</span>(<span class="params"></span>)&#123;</span><br><span class="line">     <span class="keyword">var</span> i = <span class="number">4</span>;</span><br><span class="line">     <span class="keyword">return</span> <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">         <span class="keyword">return</span> i++;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125; </span><br><span class="line"> <span class="keyword">var</span> func = <span class="title function_">myTest5</span>();</span><br><span class="line"> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">func</span>());<span class="comment">//4</span></span><br><span class="line"> func = <span class="literal">null</span>;<span class="comment">//n被回收</span></span><br><span class="line"> <span class="keyword">var</span> func = <span class="title function_">myTest5</span>();</span><br><span class="line"> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">func</span>());<span class="comment">//4</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
+<li><p>闭包的缺点就是常驻内存，闭包会使变量始终保存在内存中，如果使用不当会增大内存使用量，造成内存泄露。</p>
+</li>
+<li><p>正常情况下外部函数是不能访问内部函数的变量的，但是可以利用闭包来实现对函数内部变量的访问。</p>
+</li>
+<li><p>一般函数执行完毕后，局部活动对象就被销毁，内存中仅仅保存全局作用域。但闭包的情况不同！</p>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>在React项目中应用TypeScript</title>
+    <url>/2022/09/08/react-typescript/</url>
+    <content><![CDATA[<h2 id="如何在React项目中应用说说如何在反应项目中应用TypeScript"><a href="#如何在React项目中应用说说如何在反应项目中应用TypeScript" class="headerlink" title="如何在React项目中应用说说如何在反应项目中应用TypeScript?"></a>如何在React项目中应用说说如何在反应项目中应用TypeScript?</h2><p><img src="https://static.vue-js.com/a98974e0-13bc-11ec-a752-75723a64e8f5.png"></p>
+<h2 id="一、前言："><a href="#一、前言：" class="headerlink" title="一、前言："></a>一、前言：</h2><p>使用 <code>TypeScript</code> 编写 <code>React</code> 代码，除了需要 <code>TypeScript</code> 这个库之外，还需要安装 <code>@types/react</code>、<code>@types/react-dom</code></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">npm i @types/react -s   || yarn add @types/react -s</span><br><span class="line">npm i @types/react-dom -s  ||  yarn add @types/react-dom -s</span><br></pre></td></tr></table></figure>
+
+<p>至于上述使用 <code>@types</code> 的库的原因在于，目前非常多的 <code>JavaScript</code> 库并没有提供自己关于 <code>TypeScript</code> 的声明文件</p>
+<p>所以，<code>ts</code> 并不知道这些库的类型以及对应导出的内容，这里 <code>@types</code> 实际就是社区中的 <code>DefinitelyTyped</code> 库，定义了目前市面上绝大多数的 <code>JavaScript</code> 库的声明</p>
+<p>所以下载相关的 <code>JavaScript</code> 对应的 <code>@types</code> 声明时，就能够使用使用该库对应的类型定义</p>
+<hr>
+<span id="more"></span>
+
+<h2 id="二、使用方式"><a href="#二、使用方式" class="headerlink" title="二、使用方式"></a>二、使用方式</h2><p>在编写 <code>React</code> 项目的时候，最常见的使用的组件就是：</p>
+<ul>
+<li>无状态组件</li>
+<li>有状态组件</li>
+<li>受控组件</li>
+</ul>
+<hr>
+<h3 id="无状态组件"><a href="#无状态组件" class="headerlink" title="无状态组件:"></a>无状态组件:</h3><p>主要作用是用于展示 <code>UI</code>，如果使用 <code>js</code> 声明，则如下所示：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&quot;React&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">Logo</span> = (<span class="params">props</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; logo, className, alt &#125; = props;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&#123;logo&#125;</span> <span class="attr">className</span>=<span class="string">&#123;className&#125;</span> <span class="attr">alt</span>=<span class="string">&#123;alt&#125;</span> /&gt;</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>但这时候 <code>ts</code> 会出现报错提示，原因在于没有定义 <code>porps</code> 类型，这时候就可以使用 <code>interface</code> 接口去定义 <code>porps</code> 即可，如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&quot;React&quot;</span>;</span><br><span class="line"></span><br><span class="line">interface <span class="title class_">IProps</span> &#123;</span><br><span class="line">  logo?: string;</span><br><span class="line">  className?: string;</span><br><span class="line">  alt?: string;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">Logo</span> = (<span class="params">props: IProps</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; logo, className, alt &#125; = props;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&#123;logo&#125;</span> <span class="attr">className</span>=<span class="string">&#123;className&#125;</span> <span class="attr">alt</span>=<span class="string">&#123;alt&#125;</span> /&gt;</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>但是我们都知道 <code>props</code> 里面存在 <code>children</code> 属性，我们不可能每个 <code>porps</code> 接口里面定义多一个 <code>children</code>，如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">interface <span class="title class_">IProps</span> &#123;</span><br><span class="line">  logo?: string;</span><br><span class="line">  className?: string;</span><br><span class="line">  alt?: string;</span><br><span class="line">  children?: <span class="title class_">ReactNode</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>更加规范的写法是使用 <code>React</code> 里面定义好的 <code>FC</code> 属性，里面已经定义好 <code>children</code> 类型，如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title class_">Logo</span>: <span class="title class_">React</span>.<span class="property">FC</span>&lt;<span class="title class_">IProps</span>&gt; = <span class="function">(<span class="params">props</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; logo, className, alt &#125; = props;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&#123;logo&#125;</span> <span class="attr">className</span>=<span class="string">&#123;className&#125;</span> <span class="attr">alt</span>=<span class="string">&#123;alt&#125;</span> /&gt;</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="有状态组件"><a href="#有状态组件" class="headerlink" title="有状态组件:"></a>有状态组件:</h3><p>可以是一个类组件且存在 <code>props</code> 和 <code>state</code> 属性</p>
+<p>如果使用 <code>TypeScript</code> 声明则如下所示：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&quot;React&quot;</span>;</span><br><span class="line"></span><br><span class="line">interface <span class="title class_">IProps</span> &#123;</span><br><span class="line">  <span class="attr">color</span>: string;</span><br><span class="line">  size?: string;</span><br><span class="line">&#125;</span><br><span class="line">interface <span class="title class_">IState</span> &#123;</span><br><span class="line">  <span class="attr">count</span>: number;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">App</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span>&lt;<span class="title class_">IProps</span>, <span class="title class_">IState</span>&gt; &#123;</span><br><span class="line">  public state = &#123;</span><br><span class="line">    <span class="attr">count</span>: <span class="number">1</span>,</span><br><span class="line">  &#125;;</span><br><span class="line">  public <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>Hello world<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述通过泛型对 <code>props</code>、<code>state</code> 进行类型定义，然后在使用的时候就可以在编译器中获取更好的智能提示</p>
+<p>关于 <code>Component</code> 泛型类的定义，可以参考下 React 的类型定义文件 <code>node_modules/@types/React/index.d.ts</code>，如下所示：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Component</span>&lt;P, S&gt; &#123;</span><br><span class="line">  readonly <span class="attr">props</span>: <span class="title class_">Readonly</span>&lt;&#123; children?: <span class="title class_">ReactNode</span> &#125;&gt; &amp; <span class="title class_">Readonly</span>&lt;P&gt;;</span><br><span class="line"></span><br><span class="line">  <span class="attr">state</span>: <span class="title class_">Readonly</span>&lt;S&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上述可以看到，<code>state</code> 属性也定义了可读类型，目的是为了防止直接调用 <code>this.state</code> 更新状态</p>
+<hr>
+<h3 id="受控组件"><a href="#受控组件" class="headerlink" title="受控组件:"></a>受控组件:</h3><p>受控组件的特性在于元素的内容通过组件的状态 <code>state</code> 进行控制</p>
+<p>由于组件内部的事件是合成事件，不等同于原生事件，</p>
+<p>例如一个 <code>input</code> 组件修改内部的状态，常见的定义的时候如下所示：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">private <span class="title function_">updateValue</span>(<span class="params">e: React.ChangeEvent&lt;HTMLInputElement&gt;</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="title function_">setState</span>(&#123; <span class="attr">itemText</span>: e.<span class="property">target</span>.<span class="property">value</span> &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h2><p>上述只是简单的在 <code>React</code> 项目使用 <code>TypeScript</code>，但在编写 <code>React</code> 项目的时候，还存在 <code>hooks</code>、默认参数、以及 <code>store</code> 等等……</p>
+<hr>
+<blockquote>
+<p>基于hexo搭建的一个博客:<a href="https://nanxiangscholar.github.io/">https://nanxiangscholar.github.io/</a></p>
+<p>欢迎访问!</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>typescript</category>
+        <category>react</category>
+      </categories>
+      <tags>
+        <tag>typescript</tag>
+        <tag>react</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在Vue项目中应用TypeScript</title>
+    <url>/2022/09/12/vue-typescript/</url>
+    <content><![CDATA[<h1 id="如何在Vue项目中应用TypeScript？"><a href="#如何在Vue项目中应用TypeScript？" class="headerlink" title="如何在Vue项目中应用TypeScript？"></a>如何在Vue项目中应用TypeScript？</h1><p><img src="https://static.vue-js.com/cc658c10-1565-11ec-8e64-91fdec0f05a1.png"></p>
+<hr>
+<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>在<code>VUE</code>项目中应用<code>typescript</code>，我们需要引入一个库<code>vue-property-decorator</code>，</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"># npm 下载</span><br><span class="line">npm i vue-property-decorator -s</span><br><span class="line"># yarn 下载</span><br><span class="line">yarn add vue-property-decorator -s</span><br></pre></td></tr></table></figure>
+
+<p>其是基于<code>vue-class-component</code>库而来，这个库<code>vue</code>官方推出的一个支持使用<code>class</code>方式来开发<code>vue</code>单文件组件的库</p>
+<p>主要的功能如下：</p>
+<ul>
+<li>methods 可以直接声明为类的成员方法</li>
+<li>计算属性可以被声明为类的属性访问器</li>
+<li>初始化的 data 可以被声明为类属性</li>
+<li>data、render 以及所有的 Vue 生命周期钩子可以直接作为类的成员方法</li>
+<li>所有其他属性，需要放在装饰器中</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="二、使用"><a href="#二、使用" class="headerlink" title="二、使用"></a>二、使用</h2><p><code>vue-property-decorator</code> 主要提供了多个装饰器和一个函数:</p>
+<ul>
+<li>@Prop</li>
+<li>@PropSync</li>
+<li>@Model</li>
+<li>@Watch</li>
+<li>@Provide</li>
+<li>@Inject</li>
+<li>@ProvideReactive</li>
+<li>@InjectReactive</li>
+<li>@Emit</li>
+<li>@Ref</li>
+<li>@Component (由 vue-class-component 提供)</li>
+<li>Mixins (由 vue-class-component 提供)</li>
+</ul>
+<h3 id="Component"><a href="#Component" class="headerlink" title="@Component"></a>@Component</h3><p><code>Component</code>装饰器它注明了此类为一个<code>Vue</code>组件，因此即使没有设置选项也不能省略</p>
+<p>如果需要定义比如 <code>name</code>、<code>components</code>、<code>filters</code>、<code>directives</code>以及自定义属性，就可以在<code>Component</code>装饰器中定义，如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;<span class="title class_">Component</span>,<span class="title class_">Vue</span>&#125; <span class="keyword">from</span> <span class="string">&#x27;vue-property-decorator&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;componentA,componentB&#125; <span class="keyword">from</span> <span class="string">&#x27;@/components&#x27;</span>;</span><br><span class="line"></span><br><span class="line"> @<span class="title class_">Component</span>(&#123;</span><br><span class="line">    <span class="attr">components</span>:&#123;</span><br><span class="line">        componentA,</span><br><span class="line">        componentB,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">directives</span>: &#123;</span><br><span class="line">        <span class="attr">focus</span>: &#123;</span><br><span class="line">            <span class="comment">// 指令的定义</span></span><br><span class="line">            <span class="attr">inserted</span>: <span class="keyword">function</span> (<span class="params">el</span>) &#123;</span><br><span class="line">                el.<span class="title function_">focus</span>()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> <span class="title class_">YourCompoent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Vue</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="computed、data、methods"><a href="#computed、data、methods" class="headerlink" title="computed、data、methods"></a>computed、data、methods</h3><p>这里取消了组件的data和methods属性，以往data返回对象中的属性、methods中的方法需要直接定义在Class中，当做类的属性和方法</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">@<span class="title class_">Component</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> <span class="title class_">HelloDecorator</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Vue</span> &#123;</span><br><span class="line">    <span class="attr">count</span>: number = <span class="number">123</span> <span class="comment">// 类属性相当于以前的 data</span></span><br><span class="line"></span><br><span class="line">    <span class="title function_">add</span>(): number &#123; <span class="comment">// 类方法就是以前的方法</span></span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">count</span> + <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取计算属性</span></span><br><span class="line">    <span class="keyword">get</span> <span class="title function_">total</span>(): number &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">count</span> + <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置计算属性</span></span><br><span class="line">    <span class="keyword">set</span> <span class="title function_">total</span>(<span class="params">param:number</span>): <span class="keyword">void</span> &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">count</span> = param</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="props"><a href="#props" class="headerlink" title="@props"></a>@props</h3><p>组件接收属性的装饰器，如下使用：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;<span class="title class_">Component</span>,<span class="title class_">Vue</span>,<span class="title class_">Prop</span>&#125; <span class="keyword">from</span> vue-property-decorator;</span><br><span class="line"></span><br><span class="line">@<span class="title class_">Component</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> <span class="title class_">YourComponent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Vue</span> &#123;</span><br><span class="line">    @<span class="title class_">Prop</span>(<span class="title class_">String</span>)</span><br><span class="line">    <span class="attr">propA</span>:string;</span><br><span class="line"></span><br><span class="line">    @<span class="title class_">Prop</span>([<span class="title class_">String</span>,<span class="title class_">Number</span>])</span><br><span class="line">    <span class="attr">propB</span>:string|number;</span><br><span class="line"></span><br><span class="line">    @<span class="title class_">Prop</span>(&#123;</span><br><span class="line">     <span class="attr">type</span>: <span class="title class_">String</span>, <span class="comment">// type: [String , Number]</span></span><br><span class="line">     <span class="attr">default</span>: <span class="string">&#x27;default value&#x27;</span>, <span class="comment">// 一般为String或Number</span></span><br><span class="line">      <span class="comment">//如果是对象或数组的话。默认值从一个工厂函数中返回</span></span><br><span class="line">      <span class="comment">// defatult: () =&gt; &#123;</span></span><br><span class="line">      <span class="comment">//     return [&#x27;a&#x27;,&#x27;b&#x27;]</span></span><br><span class="line">      <span class="comment">// &#125;</span></span><br><span class="line">     <span class="attr">required</span>: <span class="literal">true</span>,</span><br><span class="line">     <span class="attr">validator</span>: <span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> [</span><br><span class="line">          <span class="string">&#x27;InProcess&#x27;</span>,</span><br><span class="line">          <span class="string">&#x27;Settled&#x27;</span></span><br><span class="line">        ].<span class="title function_">indexOf</span>(value) !== -<span class="number">1</span></span><br><span class="line">     &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="attr">propC</span>:string;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="watch"><a href="#watch" class="headerlink" title="@watch"></a>@watch</h3><p>实际就是<code>Vue</code>中的监听器，如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Vue</span>, <span class="title class_">Component</span>, <span class="title class_">Watch</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;vue-property-decorator&#x27;</span></span><br><span class="line"></span><br><span class="line">@<span class="title class_">Component</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> <span class="title class_">YourComponent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Vue</span> &#123;</span><br><span class="line">  @<span class="title class_">Watch</span>(<span class="string">&#x27;child&#x27;</span>)</span><br><span class="line">  <span class="title function_">onChildChanged</span>(<span class="params">val: string, oldVal: string</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  @<span class="title class_">Watch</span>(<span class="string">&#x27;person&#x27;</span>, &#123; <span class="attr">immediate</span>: <span class="literal">true</span>, <span class="attr">deep</span>: <span class="literal">true</span> &#125;)</span><br><span class="line">  <span class="title function_">onPersonChanged1</span>(<span class="params">val: Person, oldVal: Person</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  @<span class="title class_">Watch</span>(<span class="string">&#x27;person&#x27;</span>)</span><br><span class="line">  <span class="title function_">onPersonChanged2</span>(<span class="params">val: Person, oldVal: Person</span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="emit"><a href="#emit" class="headerlink" title="@emit"></a>@emit</h3><p><code>vue-property-decorator</code> 提供的 <code>@Emit</code> 装饰器就是代替<code>Vue</code>中的事件的触发<code>$emit</code>，如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;<span class="title class_">Vue</span>, <span class="title class_">Component</span>, <span class="title class_">Emit</span>&#125; <span class="keyword">from</span> <span class="string">&#x27;vue-property-decorator&#x27;</span>;</span><br><span class="line">    @<span class="title class_">Component</span>(&#123;&#125;)</span><br><span class="line">    <span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> <span class="title class_">Some</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Vue</span>&#123;</span><br><span class="line">        <span class="title function_">mounted</span>(<span class="params"></span>)&#123;</span><br><span class="line">            <span class="variable language_">this</span>.$on(<span class="string">&#x27;emit-todo&#x27;</span>, <span class="keyword">function</span>(<span class="params">n</span>) &#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(n)</span><br><span class="line">            &#125;)</span><br><span class="line">            <span class="variable language_">this</span>.<span class="title function_">emitTodo</span>(<span class="string">&#x27;world&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        @<span class="title class_">Emit</span>()</span><br><span class="line">        <span class="title function_">emitTodo</span>(<span class="params">n: string</span>)&#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;hello&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="三-、总结"><a href="#三-、总结" class="headerlink" title="三 、总结"></a>三 、总结</h2><p>可以看到上述<code>typescript</code>版本的<code>vue class</code>的语法与平时<code>javascript</code>版本使用起来还是有很大的不同，多处用到<code>class</code>与装饰器，但实际上本质是一致的，只有不断编写才会得心应手。</p>
+<hr>
+<blockquote>
+<p>基于hexo搭建的一个博客:<a href="https://nanxiangscholar.github.io/">https://nanxiangscholar.github.io/</a></p>
+<p>欢迎访问!</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>typescript</category>
+        <category>vue</category>
+      </categories>
+      <tags>
+        <tag>typescript</tag>
+        <tag>vue</tag>
+      </tags>
+  </entry>
+</search>
