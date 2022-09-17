@@ -332,4 +332,24 @@ addDecorator((storyFn)=&gt;(
 <h6 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h6><p><em>setTimeout</em>和<em>setIterval</em>本身执行是同步的，执行的回调函数是异步的。</p>
 ]]></content>
   </entry>
+  <entry>
+    <title>手写instanceof</title>
+    <url>/2022/09/17/instanceof/</url>
+    <content><![CDATA[<h2 id="手写instanceof"><a href="#手写instanceof" class="headerlink" title="手写instanceof"></a>手写instanceof</h2><p>首先写之前要先理解一下<strong>instanceof</strong>的实现原理:</p>
+<ul>
+<li><strong>instanceof</strong> 主要的实现原理就是只要右边变量的<strong>prototype</strong>在左边变量的原型链上即可(<em><strong>也就是说左边的变量能在原型链上找到左边变量的prototype)</strong></em></li>
+</ul>
+<hr>
+<span id="more"></span>
+
+<p>了解原理之后开始看代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"> <span class="comment">// 声明myInstanceof函数,接受两个参数left, right</span></span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">myInstanceOf</span>(<span class="params">left, right</span>) &#123;</span><br><span class="line">        <span class="comment">// 1:声明rightval变量，来得到传入的对象的原型对象</span></span><br><span class="line">        <span class="keyword">let</span> rightVal = right.<span class="property"><span class="keyword">prototype</span></span></span><br><span class="line">        <span class="comment">// 2:声明leftval变量，来得到传入的对象的原型对象</span></span><br><span class="line">        <span class="keyword">let</span> leftVal = left.<span class="property">__proto__</span></span><br><span class="line">        <span class="comment">// 3：循环遍历左边变量的原型链，查找，如果找不到就到一直循环到父类型或祖类型</span></span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (leftVal === <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (leftVal === rightVal) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">            leftVal = leftVal.<span class="property">__proto__</span> <span class="comment">// 获取祖类型的__proto__</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试用例:</span></span><br><span class="line"> <span class="keyword">function</span> <span class="title function_">Test</span>(<span class="params"></span>) &#123; &#125;</span><br><span class="line"> <span class="keyword">let</span> test = <span class="keyword">new</span> <span class="title class_">Test</span>();</span><br><span class="line"> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">myInstanceOf</span>(test, <span class="title class_">Test</span>));</span><br><span class="line"></span><br><span class="line"> ------------------</span><br><span class="line"> 结果：</span><br><span class="line"> <span class="literal">true</span>  </span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结:"></a>总结:</h5><blockquote>
+<p>instanceof在查找的过程中会遍历左边变量的原型链，直到找到右边变量的 prototype，如果查找失败，则会返回 false.</p>
+</blockquote>
+]]></content>
+  </entry>
 </search>

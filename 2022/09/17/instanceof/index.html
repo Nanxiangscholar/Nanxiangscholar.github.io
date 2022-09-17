@@ -20,17 +20,19 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="代码是敲出来的,不是看出来的!">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Nanxiangscholar">
-<meta property="og:url" content="http://example.com/archives/2022/09/index.html">
+  <meta name="description" content="手写instanceof首先写之前要先理解一下instanceof的实现原理:  instanceof 主要的实现原理就是只要右边变量的prototype在左边变量的原型链上即可(也就是说左边的变量能在原型链上找到左边变量的prototype)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="手写instanceof">
+<meta property="og:url" content="http://example.com/2022/09/17/instanceof/index.html">
 <meta property="og:site_name" content="Nanxiangscholar">
-<meta property="og:description" content="代码是敲出来的,不是看出来的!">
+<meta property="og:description" content="手写instanceof首先写之前要先理解一下instanceof的实现原理:  instanceof 主要的实现原理就是只要右边变量的prototype在左边变量的原型链上即可(也就是说左边的变量能在原型链上找到左边变量的prototype)">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-17T02:48:31.000Z">
+<meta property="article:modified_time" content="2022-09-17T02:49:21.467Z">
 <meta property="article:author" content="Nanxiangscholar">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/archives/2022/09/">
+<link rel="canonical" href="http://example.com/2022/09/17/instanceof/">
 
 
 <script id="page-configurations">
@@ -38,12 +40,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | Nanxiangscholar</title>
+  <title>手写instanceof | Nanxiangscholar</title>
   
 
 
@@ -153,150 +155,129 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 7 篇日志。 继续努力。</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/17/instanceof/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Nanxiangscholar">
+      <meta itemprop="description" content="代码是敲出来的,不是看出来的!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nanxiangscholar">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          手写instanceof
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-09-17 10:48:31 / 修改时间：10:49:21" itemprop="dateCreated datePublished" datetime="2022-09-17T10:48:31+08:00">2022-09-17</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>734</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2022</span>
-    </div>
+        <h2 id="手写instanceof"><a href="#手写instanceof" class="headerlink" title="手写instanceof"></a>手写instanceof</h2><p>首先写之前要先理解一下<strong>instanceof</strong>的实现原理:</p>
+<ul>
+<li><strong>instanceof</strong> 主要的实现原理就是只要右边变量的<strong>prototype</strong>在左边变量的原型链上即可(<em><strong>也就是说左边的变量能在原型链上找到左边变量的prototype)</strong></em></li>
+</ul>
+<hr>
+<span id="more"></span>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+<p>了解原理之后开始看代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// 声明myInstanceof函数,接受两个参数left, right</span></span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">myInstanceOf</span>(<span class="params">left, right</span>) &#123;</span><br><span class="line">        <span class="comment">// 1:声明rightval变量，来得到传入的对象的原型对象</span></span><br><span class="line">        <span class="keyword">let</span> rightVal = right.<span class="property"><span class="keyword">prototype</span></span></span><br><span class="line">        <span class="comment">// 2:声明leftval变量，来得到传入的对象的原型对象</span></span><br><span class="line">        <span class="keyword">let</span> leftVal = left.<span class="property">__proto__</span></span><br><span class="line">        <span class="comment">// 3：循环遍历左边变量的原型链，查找，如果找不到就到一直循环到父类型或祖类型</span></span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (leftVal === <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (leftVal === rightVal) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">            leftVal = leftVal.<span class="property">__proto__</span> <span class="comment">// 获取祖类型的__proto__</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试用例:</span></span><br><span class="line"> <span class="keyword">function</span> <span class="title function_">Test</span>(<span class="params"></span>) &#123; &#125;</span><br><span class="line"> <span class="keyword">let</span> test = <span class="keyword">new</span> <span class="title class_">Test</span>();</span><br><span class="line"> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">myInstanceOf</span>(test, <span class="title class_">Test</span>));</span><br><span class="line"></span><br><span class="line"> ------------------</span><br><span class="line"> 结果：</span><br><span class="line"> <span class="literal">true</span>  </span><br></pre></td></tr></table></figure>
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-09-17T10:48:31+08:00"
-              content="2022-09-17">
-          09-17
-        </time>
-      </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/09/17/instanceof/" itemprop="url">
-            <span itemprop="name">手写instanceof</span>
-          </a>
-      </div>
 
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-09-15T14:59:44+08:00"
-              content="2022-09-15">
-          09-15
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/09/15/setTimeout-setIterval/" itemprop="url">
-            <span itemprop="name">手写setTimeout和setInterval</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-09-12T11:06:29+08:00"
-              content="2022-09-12">
-          09-12
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/09/12/vue-typescript/" itemprop="url">
-            <span itemprop="name">在Vue项目中应用TypeScript</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-09-08T22:58:14+08:00"
-              content="2022-09-08">
-          09-08
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/09/08/react-typescript/" itemprop="url">
-            <span itemprop="name">在React项目中应用TypeScript</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-09-07T21:00:59+08:00"
-              content="2022-09-07">
-          09-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/09/07/js-closure/" itemprop="url">
-            <span itemprop="name">js闭包_深入浅出</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-09-07T16:14:50+08:00"
-              content="2022-09-07">
-          09-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/09/07/Storybook/" itemprop="url">
-            <span itemprop="name">Storybook</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结:"></a>总结:</h5><blockquote>
+<p>instanceof在查找的过程中会遍历左边变量的原型链，直到找到右边变量的 prototype，如果查找失败，则会返回 false.</p>
+</blockquote>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Nanxiangscholar
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2022/09/17/instanceof/" title="手写instanceof">http://example.com/2022/09/17/instanceof/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/09/15/setTimeout-setIterval/" rel="prev" title="手写setTimeout和setInterval">
+      <i class="fa fa-chevron-left"></i> 手写setTimeout和setInterval
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
@@ -350,6 +331,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%8B%E5%86%99instanceof"><span class="nav-text">手写instanceof</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结:</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
       

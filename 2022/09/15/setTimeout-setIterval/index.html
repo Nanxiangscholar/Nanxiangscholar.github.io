@@ -28,7 +28,7 @@
 <meta property="og:description" content="setTimeout写代码之前需要知道setTimeout实现原理：本质上就是在给定的时间向任务队列添加回调函数，并执行。 123456789101112131415161718192021222324function mySetTimeout(...rest)&amp;#123;      &#x2F;&#x2F; 1.得到调用setTimeoutMy函数时的时间戳      let start &#x3D;new Date().g">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-15T06:59:44.895Z">
-<meta property="article:modified_time" content="2022-09-15T07:08:35.635Z">
+<meta property="article:modified_time" content="2022-09-17T02:51:25.420Z">
 <meta property="article:author" content="Nanxiangscholar">
 <meta name="twitter:card" content="summary">
 
@@ -184,10 +184,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-09-15 14:59:44 / 修改时间：15:08:35" itemprop="dateCreated datePublished" datetime="2022-09-15T14:59:44+08:00">2022-09-15</time>
+              <time title="创建时间：2022-09-15 14:59:44" itemprop="dateCreated datePublished" datetime="2022-09-15T14:59:44+08:00">2022-09-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-09-17 10:51:25" itemprop="dateModified" datetime="2022-09-17T10:51:25+08:00">2022-09-17</time>
+              </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -281,7 +287,10 @@
     <a href="/2022/09/12/vue-typescript/" rel="prev" title="在Vue项目中应用TypeScript">
       <i class="fa fa-chevron-left"></i> 在Vue项目中应用TypeScript
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/09/17/instanceof/" rel="next" title="手写instanceof">
+      手写instanceof <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -358,17 +367,21 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
         <span class="site-state-item-count">7</span>
-        <span class="site-state-item-name">分类</span>
+        <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
         <span class="site-state-item-count">9</span>
-        <span class="site-state-item-name">标签</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
@@ -388,6 +401,16 @@
   </div>
 
 
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接(*推荐*一个大佬的博客)
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://found-404.github.io/found404.io/" title="https:&#x2F;&#x2F;found-404.github.io&#x2F;found404.io&#x2F;" rel="noopener" target="_blank">FØund404</a>
+        </li>
+    </ul>
+  </div>
 
       </div>
      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1404596131&auto=1&height=32"></iframe>
