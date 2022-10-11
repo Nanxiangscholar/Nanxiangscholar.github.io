@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="React Tookit 首先，React Tookit是React新提出的类Redux状态管理模式。该技术的提出是为了解决Redux的三个常见问题：  🤨”配置Redux储存太复杂了“ 🤔”必须添加很多包才能让Redux做任何有用的事情“ 😯”Redux需要太多样板代码“">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React-Tookit">
+<meta property="og:url" content="http://example.com/2020/09/29/Tookit/index.html">
+<meta property="og:site_name" content="Nanxiangscholar">
+<meta property="og:description" content="React Tookit 首先，React Tookit是React新提出的类Redux状态管理模式。该技术的提出是为了解决Redux的三个常见问题：  🤨”配置Redux储存太复杂了“ 🤔”必须添加很多包才能让Redux做任何有用的事情“ 😯”Redux需要太多样板代码“">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-29T06:42:35.000Z">
+<meta property="article:modified_time" content="2022-10-11T12:19:25.378Z">
+<meta property="article:author" content="Nanxiangscholar">
+<meta property="article:tag" content="React">
+<meta property="article:tag" content="Redux">
+<meta property="article:tag" content="框架">
+<meta property="article:tag" content="TypeScript">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/09/29/Tookit/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>React-Tookit | Nanxiangscholar</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Nanxiangscholar</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Nanxiangscholar%20||%20Follow%20me%20on%20GitHub" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/29/Tookit/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Nanxiangscholar">
+      <meta itemprop="description" content="代码是敲出来的,不是看出来的!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nanxiangscholar">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React-Tookit
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-29 14:42:35" itemprop="dateCreated datePublished" datetime="2020-09-29T14:42:35+08:00">2020-09-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-11 20:19:25" itemprop="dateModified" datetime="2022-10-11T20:19:25+08:00">2022-10-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="React-Tookit"><a href="#React-Tookit" class="headerlink" title="React Tookit"></a>React Tookit</h1><blockquote>
+<p>首先，React Tookit是React新提出的类Redux状态管理模式。该技术的提出是为了解决Redux的三个常见问题：</p>
+<ul>
+<li>🤨”配置Redux储存太复杂了“</li>
+<li>🤔”必须添加很多包才能让Redux做任何有用的事情“</li>
+<li>😯”Redux需要太多样板代码“</li>
+</ul>
+</blockquote>
+<span id="more"></span>
+<p><strong>更多介绍可以看<a target="_blank" rel="noopener" href="https://redux-toolkit.js.org/introduction/getting-started">官方文档</a></strong></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>官方提供了基于 React+Js 或者 React+Ts 的模块（脚手架）:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Redux + Plain JS template</span><br><span class="line">npx create-react-app my-app --template redux</span><br><span class="line"></span><br><span class="line"># Redux + TypeScript template</span><br><span class="line">npx create-react-app my-app --template redux-typescript</span><br></pre></td></tr></table></figure>
+
+<p>如果你想在已有的项目上安装，使用如下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># NPM</span><br><span class="line">npm install @reduxjs/toolkit</span><br><span class="line">or</span><br><span class="line"># Yarn</span><br><span class="line">yarn add @reduxjs/toolkit</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>当然有你需要先有react-redux</p>
+</blockquote>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><blockquote>
+<p>官方的例子是一个加减demo，我这里是一个购物车的案例</p>
+</blockquote>
+<h3 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install @reduxjs/toolkit react-redux</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建Redux-Tookit"><a href="#创建Redux-Tookit" class="headerlink" title="创建Redux-Tookit"></a>创建Redux-Tookit</h3><p>一个项目仅有一个state，和redux一样，也是需要将各个分开的状态统一整合管理</p>
+<p>注意：<code>counterSlice</code>和<code>shopCarList</code>是用户自定义的<code>slices</code>，在redux中称之为<code>reducer</code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; configureStore &#125; <span class="keyword">from</span> <span class="string">&quot;@reduxjs/toolkit&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> counterSlice <span class="keyword">from</span> <span class="string">&#x27;./slices/slices_shoplist&#x27;</span>; <span class="comment">// 商品列表state</span></span><br><span class="line"><span class="keyword">import</span> shopCarList <span class="keyword">from</span> <span class="string">&quot;./slices/slices_shopCar&quot;</span>; <span class="comment">// 购物车state</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = <span class="title function_">configureStore</span>(&#123;</span><br><span class="line">    <span class="attr">reducer</span>:&#123;</span><br><span class="line">        <span class="attr">counter</span>:counterSlice, <span class="comment">// 配置多个slices</span></span><br><span class="line">        <span class="attr">shopCar</span>:shopCarList <span class="comment">// 更多slices</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">RooState</span> = <span class="title class_">ReturnType</span>&lt;<span class="keyword">typeof</span> store.<span class="property">getState</span>&gt;  <span class="comment">// 类型生成</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">AppDispatch</span> = <span class="keyword">typeof</span> store.<span class="property">dispatch</span>  <span class="comment">// 类型生成</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store</span><br></pre></td></tr></table></figure>
+
+<p>在<code>index.ts</code>文件中引入<code>&lt;Provider&gt;</code>组件</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">ReactDOM</span> <span class="keyword">from</span> <span class="string">&#x27;react-dom/client&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;./App&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Provider</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;react-redux&#x27;</span>; <span class="comment">// 引入第三方监视组件，用于传入state</span></span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">&#x27;./redux/store&#x27;</span>; <span class="comment">// 引入公共state</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> root = <span class="title class_">ReactDOM</span>.<span class="title function_">createRoot</span>(</span><br><span class="line">  <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;root&#x27;</span>) <span class="keyword">as</span> <span class="title class_">HTMLElement</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 包裹App组件</span></span><br><span class="line">root.<span class="title function_">render</span>(</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">Provider</span> <span class="attr">store</span>=<span class="string">&#123;store&#125;</span>&gt;</span> </span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">App</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">Provider</span>&gt;</span></span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>创建各个状态文件在<code>redux/slices/slices_shoplist</code></p>
+<p>ts类型注解不做过多解释,<code>PayloadAction</code>是官方提供的TS接口,&lt;&gt;中注解使用该reducer传入参数的类型</p>
+<blockquote>
+<p>每个reducer方法都有形参<code>state,action</code>，<code>state</code>指向状态，<code>action</code>中的<code>action.payload</code>代表调用该reducer方法的时候传入的参数</p>
+</blockquote>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createSlice,createAsyncThunk,<span class="title class_">PayloadAction</span> &#125; <span class="keyword">from</span> <span class="string">&quot;@reduxjs/toolkit&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> initArr &#123;</span><br><span class="line">    <span class="attr">key</span>:<span class="built_in">number</span>,</span><br><span class="line">    <span class="attr">title</span>:<span class="built_in">string</span>,</span><br><span class="line">    <span class="attr">price</span>:<span class="built_in">number</span>,</span><br><span class="line">    <span class="attr">quantity</span>:<span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> initType &#123;</span><br><span class="line">    <span class="attr">shopList</span>:<span class="title class_">Array</span>&lt;initArr&gt;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始状态</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">initial</span>:<span class="title class_">Array</span>&lt;initArr&gt; = [</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">key</span>:<span class="number">1</span>,</span><br><span class="line">        <span class="attr">title</span>:<span class="string">&#x27;测试文本01&#x27;</span>,</span><br><span class="line">        <span class="attr">price</span>:<span class="number">100</span>,</span><br><span class="line">        <span class="attr">quantity</span>:<span class="number">100</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">key</span>:<span class="number">2</span>,</span><br><span class="line">        <span class="attr">title</span>:<span class="string">&#x27;测试文本02&#x27;</span>,</span><br><span class="line">        <span class="attr">price</span>:<span class="number">200</span>,</span><br><span class="line">        <span class="attr">quantity</span>:<span class="number">100</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">key</span>:<span class="number">3</span>,</span><br><span class="line">        <span class="attr">title</span>:<span class="string">&#x27;测试文本03&#x27;</span>,</span><br><span class="line">        <span class="attr">price</span>:<span class="number">300</span>,</span><br><span class="line">        <span class="attr">quantity</span>:<span class="number">100</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">initialState</span>:initType = &#123;</span><br><span class="line">    <span class="attr">shopList</span>:initial</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> counterSlice = <span class="title function_">createSlice</span>(&#123;</span><br><span class="line">    <span class="attr">name</span>:<span class="string">&#x27;counter&#x27;</span>,</span><br><span class="line">    initialState, <span class="comment">// 初始状态</span></span><br><span class="line">    <span class="attr">reducers</span>:&#123; <span class="comment">// reducer</span></span><br><span class="line">        <span class="attr">addShop</span>:<span class="function">(<span class="params">state,action:PayloadAction&lt;initArr&gt;</span>)=&gt;</span>&#123;</span><br><span class="line">            <span class="comment">// 添加商品功能</span></span><br><span class="line">            state.<span class="property">shopList</span>.<span class="title function_">push</span>(action.<span class="property">payload</span>)</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">deleShop</span>:<span class="function">(<span class="params">state,action:PayloadAction&lt;<span class="built_in">number</span>&gt;</span>)=&gt;</span>&#123;</span><br><span class="line">            <span class="comment">// 删除指定商品功能</span></span><br><span class="line">            state.<span class="property">shopList</span> = state.<span class="property">shopList</span>.<span class="title function_">filter</span>(<span class="function">(<span class="params">tit:initArr</span>)=&gt;</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> tit.<span class="property">key</span> !== action.<span class="property">payload</span></span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> &#123;</span><br><span class="line">    addShop,   <span class="comment">// 将各个reducer暴露出去</span></span><br><span class="line">    deleShop</span><br><span class="line">&#125; = counterSlice.<span class="property">actions</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> counterSlice.<span class="property">reducer</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在组件中使用，在函数组件中使用钩子<code>useSelector,useDispatch</code>获取初始状态以及dispatch，代码过多请仅关注标注部分</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span>, &#123; useRef &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; useSelector,useDispatch&#125; <span class="keyword">from</span> <span class="string">&#x27;react-redux&#x27;</span>  <span class="comment">// 引入两个必要的钩子</span></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">type</span> &#123; <span class="title class_">RooState</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;../../redux/store&#x27;</span>; <span class="comment">// 引入生成的类型注解</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> styled <span class="keyword">from</span> <span class="string">&#x27;styled-components&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; addShop &#125; <span class="keyword">from</span> <span class="string">&#x27;../../redux/slices/slices_shoplist&#x27;</span>; <span class="comment">// 引入使用的reducer</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title class_">OneDiv</span> = styled.<span class="property">div</span><span class="string">`</span></span><br><span class="line"><span class="string">  h1&#123;</span></span><br><span class="line"><span class="string">    font-size:25px;</span></span><br><span class="line"><span class="string">    font-weight:600;</span></span><br><span class="line"><span class="string">    color:#5592fa;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Input</span> = styled.<span class="property">input</span><span class="string">`</span></span><br><span class="line"><span class="string">  border:1px solid #5592fa;</span></span><br><span class="line"><span class="string">  border-radius:5px;</span></span><br><span class="line"><span class="string">  width: <span class="subst">$&#123;(props)=&gt;props.width&#125;</span>;</span></span><br><span class="line"><span class="string">  height: 30px;</span></span><br><span class="line"><span class="string">  margin-top:20px;</span></span><br><span class="line"><span class="string">  font-size:18px;</span></span><br><span class="line"><span class="string">  padding-left:10px;</span></span><br><span class="line"><span class="string">  outline:none;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Span</span> = styled.<span class="property">span</span><span class="string">`</span></span><br><span class="line"><span class="string">  color:#5592fa;</span></span><br><span class="line"><span class="string">  padding: 0px 9px;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Button</span> = styled.<span class="property">button</span><span class="string">`</span></span><br><span class="line"><span class="string">  width:100px;</span></span><br><span class="line"><span class="string">  height: 30px;</span></span><br><span class="line"><span class="string">  background-color:#5592fa;</span></span><br><span class="line"><span class="string">  color:#fff;</span></span><br><span class="line"><span class="string">  padding: 0px 9px;</span></span><br><span class="line"><span class="string">  border:none;</span></span><br><span class="line"><span class="string">  cursor: pointer;</span></span><br><span class="line"><span class="string">  margin:30px 0px 0px 80px;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">One</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> shopTitle = useRef&lt;<span class="title class_">HTMLInputElement</span>&gt;(<span class="literal">null</span>);</span><br><span class="line">  <span class="keyword">const</span> shopPrice = useRef&lt;<span class="title class_">HTMLInputElement</span>&gt;(<span class="literal">null</span>);</span><br><span class="line">  <span class="keyword">const</span> shopQuantity = useRef&lt;<span class="title class_">HTMLInputElement</span>&gt;(<span class="literal">null</span>);</span><br><span class="line">    </span><br><span class="line">  <span class="comment">// 获取状态(注意RooState类型就是store中生成的类型)</span></span><br><span class="line">  <span class="keyword">const</span> <span class="variable constant_">ULS</span> = <span class="title function_">useSelector</span>(<span class="function">(<span class="params">state:RooState</span>)=&gt;</span>state.<span class="property">counter</span>); </span><br><span class="line">  <span class="comment">// 生成dispatch</span></span><br><span class="line">  <span class="keyword">const</span>  dispatch = <span class="title function_">useDispatch</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">addShopList</span> = (<span class="params"></span>)=&gt;&#123;</span><br><span class="line">    <span class="keyword">if</span> (shopTitle.<span class="property">current</span>?.<span class="property">value</span>.<span class="title function_">trim</span>()&amp;&amp;shopPrice.<span class="property">current</span>?.<span class="property">value</span>.<span class="title function_">trim</span>()&amp;&amp;shopQuantity.<span class="property">current</span>?.<span class="property">value</span>.<span class="title function_">trim</span>()) &#123;      </span><br><span class="line">      <span class="keyword">let</span> obj = &#123;</span><br><span class="line">        <span class="attr">key</span>:+<span class="keyword">new</span> <span class="title class_">Date</span>(),</span><br><span class="line">        <span class="attr">title</span>:shopTitle.<span class="property">current</span>?.<span class="property">value</span>,</span><br><span class="line">        <span class="attr">price</span>:<span class="built_in">parseInt</span>(shopPrice.<span class="property">current</span>?.<span class="property">value</span>),</span><br><span class="line">        <span class="attr">quantity</span>:<span class="built_in">parseInt</span>(shopQuantity.<span class="property">current</span>?.<span class="property">value</span>)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="title function_">dispatch</span>(<span class="title function_">addShop</span>(obj)) <span class="comment">// 调用方法</span></span><br><span class="line">      shopTitle.<span class="property">current</span>.<span class="property">value</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">      shopPrice.<span class="property">current</span>.<span class="property">value</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">      shopQuantity.<span class="property">current</span>.<span class="property">value</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      <span class="title function_">alert</span>(<span class="string">&#x27;请输入内容&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">OneDiv</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">h1</span>&gt;</span>添加商品<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">li</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">Span</span>&gt;</span>商品名称:<span class="tag">&lt;/<span class="name">Span</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">Input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400px&quot;</span> <span class="attr">ref</span>=<span class="string">&#123;shopTitle&#125;</span> <span class="attr">placeholder</span>=<span class="string">&quot;名称&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">Input</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">li</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">Span</span>&gt;</span>商品价格:<span class="tag">&lt;/<span class="name">Span</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">Input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">width</span>=<span class="string">&quot;50px&quot;</span> <span class="attr">ref</span>=<span class="string">&#123;shopPrice&#125;</span> <span class="attr">placeholder</span>=<span class="string">&quot;价格&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">Input</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">li</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">Span</span>&gt;</span>商品数量:<span class="tag">&lt;/<span class="name">Span</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">Input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">width</span>=<span class="string">&quot;50px&quot;</span> <span class="attr">ref</span>=<span class="string">&#123;shopQuantity&#125;</span> <span class="attr">placeholder</span>=<span class="string">&quot;数量&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">Input</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">li</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">Button</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span>=&gt;</span>addShopList()&#125;&gt;添加商品<span class="tag">&lt;/<span class="name">Button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">OneDiv</span>&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">One</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="关于异步"><a href="#关于异步" class="headerlink" title="关于异步"></a>关于异步</h3><blockquote>
+<p>官方提供的Demo中的异步属于简化写法，并不会对异步进行监听</p>
+</blockquote>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">incrementAsync</span> = (<span class="params">amount</span>) =&gt; <span class="function">(<span class="params">dispatch</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 异步方法存放于此</span></span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">dispatch</span>(<span class="title function_">incrementByAmount</span>(amount)) <span class="comment">// 可在此调用同步中的reducer方法</span></span><br><span class="line">  &#125;, <span class="number">1000</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第二种写法：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createSlice,createAsyncThunk &#125; <span class="keyword">from</span> <span class="string">&quot;@reduxjs/toolkit&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">var</span> loadPic = <span class="title function_">createAsyncThunk</span>(<span class="string">&#x27;weather/loadPic&#x27;</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve:(str:<span class="built_in">string</span>)=&gt;<span class="built_in">void</span>,reject</span>)=&gt;</span>&#123;</span><br><span class="line">        <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">            <span class="title function_">resolve</span>(<span class="string">&#x27;数据&#x27;</span>);</span><br><span class="line">        &#125;,<span class="number">1000</span>)</span><br><span class="line">    &#125;) <span class="comment">// 此处的返回结果会在 .fulfilled中作为payload的值</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> counterSlice = <span class="title function_">createSlice</span>(&#123;</span><br><span class="line">    <span class="attr">name</span>:<span class="string">&#x27;counter&#x27;</span>,</span><br><span class="line">    <span class="attr">initialState</span>:&#123;</span><br><span class="line">        <span class="attr">value</span>:<span class="number">0</span> <span class="comment">// 初始值</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">reducers</span>:&#123; <span class="comment">// reducer</span></span><br><span class="line">        <span class="attr">incremented</span>:<span class="function">(<span class="params">state</span>)=&gt;</span>&#123;</span><br><span class="line">            state.<span class="property">value</span>+=<span class="number">1</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">decremented</span>:<span class="function">(<span class="params">state</span>)=&gt;</span>&#123;</span><br><span class="line">            state.<span class="property">value</span>-=<span class="number">1</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">add</span>:<span class="function">(<span class="params">state,action</span>)=&gt;</span>&#123;</span><br><span class="line">            <span class="comment">// action的playload是调用该函数的时候传入的值</span></span><br><span class="line">            state.<span class="property">value</span>+=action.<span class="property">payload</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 第一种写法</span></span><br><span class="line">    <span class="comment">// extraReducers:&#123;</span></span><br><span class="line">    <span class="comment">//     [loadPic.pending.type](state,action:any)&#123;</span></span><br><span class="line">    <span class="comment">//         console.log(&#x27;pending&#x27;,state,action);</span></span><br><span class="line">    <span class="comment">//     &#125;,</span></span><br><span class="line">    <span class="comment">//     [loadPic.fulfilled.type](state,action:any)&#123;</span></span><br><span class="line">    <span class="comment">//         console.log(&#x27;fulfilled&#x27;,state,action);</span></span><br><span class="line">    <span class="comment">//         state.value+=1;</span></span><br><span class="line">    <span class="comment">//     &#125;,</span></span><br><span class="line">    <span class="comment">//     [loadPic.rejected.type](state,action:any)&#123;</span></span><br><span class="line">    <span class="comment">//         console.log(&#x27;rejected&#x27;,state,action);</span></span><br><span class="line">    <span class="comment">//     &#125;,</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line">    <span class="comment">// 第二种写法</span></span><br><span class="line">    <span class="title function_">extraReducers</span>(<span class="params">builder</span>)&#123;</span><br><span class="line">        builder</span><br><span class="line">            .<span class="title function_">addCase</span>(loadPic.<span class="property">pending</span>,<span class="function">(<span class="params">state</span>)=&gt;</span>&#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(state);</span><br><span class="line">            &#125;)</span><br><span class="line">            .<span class="title function_">addCase</span>(loadPic.<span class="property">fulfilled</span>,<span class="function">(<span class="params">state</span>)=&gt;</span>&#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(state);</span><br><span class="line">            &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> &#123;incremented,decremented,add&#125; = counterSlice.<span class="property">actions</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> counterSlice.<span class="property">reducer</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Nanxiangscholar
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2020/09/29/Tookit/" title="React-Tookit">http://example.com/2020/09/29/Tookit/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/React/" rel="tag"># React</a>
+              <a href="/tags/Redux/" rel="tag"># Redux</a>
+              <a href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag"># 框架</a>
+              <a href="/tags/TypeScript/" rel="tag"># TypeScript</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/07/js-closure/" rel="prev" title="js闭包_深入浅出">
+      <i class="fa fa-chevron-left"></i> js闭包_深入浅出
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/10/11/diff/" rel="next" title="DOM diff">
+      DOM diff <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#React-Tookit"><span class="nav-text">React Tookit</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-1"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BARedux-Tookit"><span class="nav-text">创建Redux-Tookit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%BC%82%E6%AD%A5"><span class="nav-text">关于异步</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Nanxiangscholar"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Nanxiangscholar</p>
+  <div class="site-description" itemprop="description">代码是敲出来的,不是看出来的!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Nanxiangscholar" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Nanxiangscholar" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_58459674?spm=1000.2115.3001.5343" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_58459674?spm&#x3D;1000.2115.3001.5343" rel="noopener" target="_blank"><i class="crosshairs fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/394815057@qq.com" title="E-Mail → 394815057@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接(*推荐*一个大佬的博客)
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://found-404.github.io/found404.io/" title="https:&#x2F;&#x2F;found-404.github.io&#x2F;found404.io&#x2F;" rel="noopener" target="_blank">FØund404</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+     <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1404596131&auto=1&height=32"></iframe>
+        
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南巷书生</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">NaNm</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">NaN:aN</span>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  ((window.gitter = {}).chat = {}).options = {
+    room: 'Nanxiangscholar/community'
+  };
+</script>
+<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+</body>
+</html>

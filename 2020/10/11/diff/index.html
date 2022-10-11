@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="DOM diff 作为工程问题，需要具有一定算法思维，因此经常出现在面试场景中，毕竟这是难得出现在工程领域的算法问题。 无论出于面试目的，还是深入学习目的，都有必要将这个问题搞懂，因此前端精读我们就专门用一个章节说清楚此问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DOM diff">
+<meta property="og:url" content="http://example.com/2020/10/11/diff/index.html">
+<meta property="og:site_name" content="Nanxiangscholar">
+<meta property="og:description" content="DOM diff 作为工程问题，需要具有一定算法思维，因此经常出现在面试场景中，毕竟这是难得出现在工程领域的算法问题。 无论出于面试目的，还是深入学习目的，都有必要将这个问题搞懂，因此前端精读我们就专门用一个章节说清楚此问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.alicdn.com/imgextra/i4/O1CN01wmLt541W6xt9a1BPm_!!6000000002740-2-tps-1112-814.png">
+<meta property="og:image" content="https://img.alicdn.com/imgextra/i3/O1CN01SNNr8d1EvedrTG4eN_!!6000000000414-2-tps-1252-800.png">
+<meta property="og:image" content="https://img.alicdn.com/imgextra/i2/O1CN016XhiF01H2BWRGocp8_!!6000000000699-2-tps-1232-1380.png">
+<meta property="og:image" content="https://img.alicdn.com/imgextra/i4/O1CN01YBUnOF28fjM4qW4v9_!!6000000007960-2-tps-882-158.png">
+<meta property="og:image" content="https://img.alicdn.com/imgextra/i4/O1CN01EeRPFd1Rnwz7WUpiC_!!6000000002157-2-tps-1002-610.png">
+<meta property="og:image" content="https://img.alicdn.com/imgextra/i4/O1CN01kRDF2P1ErX4vjTkGq_!!6000000000405-2-tps-998-412.png">
+<meta property="og:image" content="https://img.alicdn.com/imgextra/i3/O1CN01zsDAtY1DmCrAAag0f_!!6000000000258-2-tps-978-418.png">
+<meta property="og:image" content="https://img.alicdn.com/imgextra/i1/O1CN01LCmhdG1TDQdQKEx2E_!!6000000002348-2-tps-980-488.png">
+<meta property="og:image" content="https://img.alicdn.com/imgextra/i2/O1CN01kAkNxD1YAHzyOTg7I_!!6000000003018-2-tps-904-144.png">
+<meta property="og:image" content="https://img.alicdn.com/imgextra/i2/O1CN01UNjJcv1m64yfQz6wS_!!6000000004904-2-tps-974-400.png">
+<meta property="og:image" content="https://img.alicdn.com/imgextra/i3/O1CN01xmOwVd1TJqB2Hakpk_!!6000000002362-2-tps-1696-374.png">
+<meta property="og:image" content="https://img.alicdn.com/imgextra/i2/O1CN01ylI1wb1FrowPwcROD_!!6000000000541-2-tps-1704-376.png">
+<meta property="og:image" content="https://img.alicdn.com/imgextra/i3/O1CN01UZ2Wf71SxrAQfLZ48_!!6000000002314-2-tps-1704-378.png">
+<meta property="article:published_time" content="2020-10-11T12:04:05.000Z">
+<meta property="article:modified_time" content="2022-10-11T12:18:29.762Z">
+<meta property="article:author" content="Nanxiangscholar">
+<meta property="article:tag" content="React">
+<meta property="article:tag" content="es6">
+<meta property="article:tag" content="diff">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.alicdn.com/imgextra/i4/O1CN01wmLt541W6xt9a1BPm_!!6000000002740-2-tps-1112-814.png">
+
+<link rel="canonical" href="http://example.com/2020/10/11/diff/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>DOM diff | Nanxiangscholar</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Nanxiangscholar</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Nanxiangscholar%20||%20Follow%20me%20on%20GitHub" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/11/diff/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Nanxiangscholar">
+      <meta itemprop="description" content="代码是敲出来的,不是看出来的!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nanxiangscholar">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DOM diff
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-11 20:04:05" itemprop="dateCreated datePublished" datetime="2020-10-11T20:04:05+08:00">2020-10-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-11 20:18:29" itemprop="dateModified" datetime="2022-10-11T20:18:29+08:00">2022-10-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>DOM diff 作为工程问题，需要具有一定算法思维，因此经常出现在面试场景中，毕竟这是难得出现在工程领域的算法问题。</p>
+<p>无论出于面试目的，还是深入学习目的，都有必要将这个问题搞懂，因此前端精读我们就专门用一个章节说清楚此问题。</p>
+<span id="more"></span>
+
+<h2 id="精读"><a href="#精读" class="headerlink" title="精读"></a>精读</h2><p>Dom diff 是所有现在框架必须做的事情，这背后的原因是，由 Jquery 时代的面向操作过程转变为数据驱动视图导致的。</p>
+<p>为什么 Jquery 时代不需要 Dom diff？因为 Dom diff 交给业务处理了，我们调用 <code>.append</code> 或者 <code>.move</code> 之类 Dom 操作函数，就是显式申明了如何做 Dom diff，这种方案是最高效的，因为怎么移动 Dom 只有业务最清楚。</p>
+<p>但这样的问题也很明显，就是业务心智负担太重，对于复杂系统，需要做 Dom diff 的地方太多，不仅写起来繁琐，当状态存在交错时，面向过程的手动 Dom diff 容易出现状态遗漏，导致边界错误，就算你没有写出 bug，代码的可维护性也绝对算不上好。</p>
+<p>解决方案就是数据驱动，我们只需要关注数据如何映射到 UI，这样无论业务逻辑再复杂，我们永远只需要解决局部状态的映射，这极大降低了复杂系统的维护复杂度，以前需要一个老手写的逻辑，现在新手就能做了，这是非常了不起的变化。</p>
+<p>但有利也有弊，这背后 Dom diff 就要交给框架来做了，所以是否能高效的做 Dom diff，是一个数据驱动框架能否应用于生产环境的重要指标，接下来，我们来看看 Dom diff 是如何做的吧。</p>
+<h3 id="理想的-Dom-diff"><a href="#理想的-Dom-diff" class="headerlink" title="理想的 Dom diff"></a>理想的 Dom diff</h3><img width=600 src="https://img.alicdn.com/imgextra/i4/O1CN01wmLt541W6xt9a1BPm_!!6000000002740-2-tps-1112-814.png">
+
+<p>如图所示，理想的 Dom diff 自然是滴水不漏的复用所有能复用的，实在遇到新增或删除时，才执行插入或删除。这样的操作最贴近 Jquery 时代我们手写的 Dom diff 性能。</p>
+<p>可惜程序无法猜到你的想法，想要精确复用就必须付出高昂的代价：时间复杂度 O(n³) 的 diff 算法，这显然是无法接受的，因此理想的 Dom diff 算法无法被使用。</p>
+<blockquote>
+<p>关于 O(n³) 的由来。由于左树中任意节点都可能出现在右树，所以必须在对左树深度遍历的同时，对右树进行深度遍历，找到每个节点的对应关系，这里的时间复杂度是 O(n²)，之后需要对树的各节点进行增删移的操作，这个过程简单可以理解为加了一层遍历循环，因此再乘一个 n。</p>
+</blockquote>
+<h3 id="简化的-Dom-diff"><a href="#简化的-Dom-diff" class="headerlink" title="简化的 Dom diff"></a>简化的 Dom diff</h3><img width=700 src="https://img.alicdn.com/imgextra/i3/O1CN01SNNr8d1EvedrTG4eN_!!6000000000414-2-tps-1252-800.png">
+
+<p>如图所示，只按层比较，就可以将时间复杂度降低为 O(n)。按层比较也不是广度遍历，其实就是判断某个节点的子元素间 diff，跨父节点的兄弟节点也不必比较。</p>
+<p>这样做确实非常高效，但代价就是，判断的有点傻，比如 ac 明明是一个移动操作，却被误识别为删除 + 新增。</p>
+<p>好在跨 DOM 复用在实际业务场景中很少出现，因此这种笨拙出现的频率实际上非常低，这时候我们就不要太追求学术思维上的严谨了，毕竟框架是给实际项目用的，实际项目中很少出现的场景，算法是可以不考虑的。</p>
+<p>下面是同层 diff 可能出现的三种情况，非常简单，看图即可：</p>
+<img width=700 src="https://img.alicdn.com/imgextra/i2/O1CN016XhiF01H2BWRGocp8_!!6000000000699-2-tps-1232-1380.png">
+
+<p>那么同层比较是怎么达到 O(n) 时间复杂度的呢？我们来看具体框架的思路。</p>
+<h3 id="React-的-Dom-diff"><a href="#React-的-Dom-diff" class="headerlink" title="React 的 Dom diff"></a>React 的 Dom diff</h3><img width=500 src="https://img.alicdn.com/imgextra/i4/O1CN01YBUnOF28fjM4qW4v9_!!6000000007960-2-tps-882-158.png">
+
+<p>假设这么一种情况，我们将 a 移到了 c 后，那么框架从最终状态倒推，如何最快的找到这个动机呢？React 采用了 <strong>仅右移策略</strong>，即对元素发生的位置变化，只会将其移动到右边，那么右边移完了，其他位置也就有序了。</p>
+<p>我们看图说明：</p>
+<img width=500 src="https://img.alicdn.com/imgextra/i4/O1CN01EeRPFd1Rnwz7WUpiC_!!6000000002157-2-tps-1002-610.png">
+
+<p>遍历 Old 存储 Map 和 Vue 是一样的，然后就到了第二步遍历 New，<code>b</code> 下标从原来的 <code>1</code> 变成了 <code>0</code>，需要左移才行，但我们不左移，我们只右移，因为所有右移做完后，左移就等于自动做掉了（前面的元素右移后，自己自然被顶到前面去了，实现了左移的效果）。</p>
+<img width=500 src="https://img.alicdn.com/imgextra/i4/O1CN01kRDF2P1ErX4vjTkGq_!!6000000000405-2-tps-998-412.png">
+
+<p>同理，c 下标从 <code>2</code> 变成了 <code>1</code>，需要左移才行，但我们继续不动。</p>
+<img width=500 src="https://img.alicdn.com/imgextra/i3/O1CN01zsDAtY1DmCrAAag0f_!!6000000000258-2-tps-978-418.png">
+
+<p>a 的下标从 <code>0</code> 变成 <code>2</code>，终于可以右移了！</p>
+<img width=500 src="https://img.alicdn.com/imgextra/i1/O1CN01LCmhdG1TDQdQKEx2E_!!6000000002348-2-tps-980-488.png">
+
+<p>后面的 d、e 下标没变，就不用动。我们纵观整体可以发现，b 和 c 因为前面的 a 被抽走了，自然发生了左移。这就是用一个右移代替两个左移的高效操作。</p>
+<p>同时我们发现，这也确实找到了我们开始提到的最佳位移策略。</p>
+<p>那这个算法真的有这么聪明吗？显然不是，这个算法只是歪打误撞碰对了而已，<strong>有用右移替代左移的算法，就有用左移替代右移的算法</strong>，既然选择了右移替代左移，那么一定丢失了左移代替右移的效率。</p>
+<p>什么时候用左移代替右移效率最高？就是把数组最后一位移到第一位的场景：</p>
+<img width=500 src="https://img.alicdn.com/imgextra/i2/O1CN01kAkNxD1YAHzyOTg7I_!!6000000003018-2-tps-904-144.png">
+
+<p>显然左移只要一步，那么右移就是 n-1 步，在这个例子就是 4 步，我们看右移算法图解：</p>
+<img width=500 src="https://img.alicdn.com/imgextra/i2/O1CN01UNjJcv1m64yfQz6wS_!!6000000004904-2-tps-974-400.png">
+
+<p>首先找到 e，位置从 <code>4</code> 变成了 <code>0</code>，但我们不能左移！所以只能保持不动，悲剧从此开始。</p>
+<img width=800 src="https://img.alicdn.com/imgextra/i3/O1CN01xmOwVd1TJqB2Hakpk_!!6000000002362-2-tps-1696-374.png">
+
+<p>虽然算法已经不是最优了，但该做的还是要做，其实之前有一个 lastIndex 概念没有说，因为 e 已经在 <code>4</code> 的位置了，所以再把 a 从 <code>0</code> 挪到 <code>1</code> 已经不够了，此时 a 应该从 <code>0</code> 挪到 <code>5</code>。</p>
+<p>方法就是记录 <code>lastIndex = max(oldIndex, newIndex)</code> &#x3D;&gt; <code>lastIndex = max(4, 0)</code>，下一次移动到 <code>lastIndex + 1</code> 也就是 <code>5</code>：</p>
+<img width=800 src="https://img.alicdn.com/imgextra/i2/O1CN01ylI1wb1FrowPwcROD_!!6000000000541-2-tps-1704-376.png">
+
+<p>发现 a 从 <code>0</code> 变成了 <code>5</code>（注意，此时考虑到 lastIndex 因素），所以右移。</p>
+<img width=800 src="https://img.alicdn.com/imgextra/i3/O1CN01UZ2Wf71SxrAQfLZ48_!!6000000002314-2-tps-1704-378.png">
+
+<p>同理，b、c、d 也一样。我们最后发现，发生了 4 次右移，e 也因为自然左移了 4 次到达了首位，符合预期。</p>
+<p>所以这是一个有利有弊的算法。新增和删除比较简单，和 Vue 差不多。</p>
+<p>PS：最新版 React Dom diff 算法如有更新，欢迎在评论区指出，因为这种算法看来不如 Vue 的高效。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Dom diff 总结有这么几点考虑：</p>
+<ol>
+<li>完全对比 O(n³) 无法接受，故降级为同层对比的 O(n) 方案。</li>
+<li>为什么降级可行？因为跨层级很少发生，可以忽略。</li>
+<li>同层级也不简单，难点是如何高效位移，即最小步数完成位移。</li>
+<li>Vue 为了尽量不移动，先左右夹击跳过不变的，再找到最长连续子串保持不动，移动其他元素。</li>
+<li>React 采用仅右移方案，在大部分从左往右移的业务场景中，得到了较好的性能。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Nanxiangscholar
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2020/10/11/diff/" title="DOM diff">http://example.com/2020/10/11/diff/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/React/" rel="tag"># React</a>
+              <a href="/tags/es6/" rel="tag"># es6</a>
+              <a href="/tags/diff/" rel="tag"># diff</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/29/Tookit/" rel="prev" title="React-Tookit">
+      <i class="fa fa-chevron-left"></i> React-Tookit
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/06/20/Storybook/" rel="next" title="Storybook">
+      Storybook <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B2%BE%E8%AF%BB"><span class="nav-text">精读</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%90%86%E6%83%B3%E7%9A%84-Dom-diff"><span class="nav-text">理想的 Dom diff</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8C%96%E7%9A%84-Dom-diff"><span class="nav-text">简化的 Dom diff</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#React-%E7%9A%84-Dom-diff"><span class="nav-text">React 的 Dom diff</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Nanxiangscholar"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Nanxiangscholar</p>
+  <div class="site-description" itemprop="description">代码是敲出来的,不是看出来的!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Nanxiangscholar" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Nanxiangscholar" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_58459674?spm=1000.2115.3001.5343" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_58459674?spm&#x3D;1000.2115.3001.5343" rel="noopener" target="_blank"><i class="crosshairs fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/394815057@qq.com" title="E-Mail → 394815057@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接(*推荐*一个大佬的博客)
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://found-404.github.io/found404.io/" title="https:&#x2F;&#x2F;found-404.github.io&#x2F;found404.io&#x2F;" rel="noopener" target="_blank">FØund404</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+     <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1404596131&auto=1&height=32"></iframe>
+        
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南巷书生</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">NaNm</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">NaN:aN</span>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  ((window.gitter = {}).chat = {}).options = {
+    room: 'Nanxiangscholar/community'
+  };
+</script>
+<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+</body>
+</html>

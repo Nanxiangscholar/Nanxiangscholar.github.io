@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="如何在Vue项目中应用TypeScript？  一、前言在VUE项目中应用typescript，我们需要引入一个库vue-property-decorator， 1234# npm 下载npm i vue-property-decorator -s# yarn 下载yarn add vue-property-decorator -s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Vue项目中应用TypeScript">
+<meta property="og:url" content="http://example.com/2021/09/12/vue-typescript/index.html">
+<meta property="og:site_name" content="Nanxiangscholar">
+<meta property="og:description" content="如何在Vue项目中应用TypeScript？  一、前言在VUE项目中应用typescript，我们需要引入一个库vue-property-decorator， 1234# npm 下载npm i vue-property-decorator -s# yarn 下载yarn add vue-property-decorator -s">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://static.vue-js.com/cc658c10-1565-11ec-8e64-91fdec0f05a1.png">
+<meta property="article:published_time" content="2021-09-12T03:06:29.000Z">
+<meta property="article:modified_time" content="2022-10-11T12:31:34.777Z">
+<meta property="article:author" content="Nanxiangscholar">
+<meta property="article:tag" content="typescript">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://static.vue-js.com/cc658c10-1565-11ec-8e64-91fdec0f05a1.png">
+
+<link rel="canonical" href="http://example.com/2021/09/12/vue-typescript/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>在Vue项目中应用TypeScript | Nanxiangscholar</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Nanxiangscholar</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Nanxiangscholar%20||%20Follow%20me%20on%20GitHub" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/12/vue-typescript/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Nanxiangscholar">
+      <meta itemprop="description" content="代码是敲出来的,不是看出来的!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nanxiangscholar">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在Vue项目中应用TypeScript
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-12 11:06:29" itemprop="dateCreated datePublished" datetime="2021-09-12T11:06:29+08:00">2021-09-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-11 20:31:34" itemprop="dateModified" datetime="2022-10-11T20:31:34+08:00">2022-10-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Typescript/" itemprop="url" rel="index"><span itemprop="name">Typescript</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Typescript/vue/" itemprop="url" rel="index"><span itemprop="name">vue</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="如何在Vue项目中应用TypeScript？"><a href="#如何在Vue项目中应用TypeScript？" class="headerlink" title="如何在Vue项目中应用TypeScript？"></a>如何在Vue项目中应用TypeScript？</h1><p><img src="https://static.vue-js.com/cc658c10-1565-11ec-8e64-91fdec0f05a1.png"></p>
+<hr>
+<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>在<code>VUE</code>项目中应用<code>typescript</code>，我们需要引入一个库<code>vue-property-decorator</code>，</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># npm 下载</span><br><span class="line">npm i vue-property-decorator -s</span><br><span class="line"># yarn 下载</span><br><span class="line">yarn add vue-property-decorator -s</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>其是基于<code>vue-class-component</code>库而来，这个库<code>vue</code>官方推出的一个支持使用<code>class</code>方式来开发<code>vue</code>单文件组件的库</p>
+<p>主要的功能如下：</p>
+<ul>
+<li>methods 可以直接声明为类的成员方法</li>
+<li>计算属性可以被声明为类的属性访问器</li>
+<li>初始化的 data 可以被声明为类属性</li>
+<li>data、render 以及所有的 Vue 生命周期钩子可以直接作为类的成员方法</li>
+<li>所有其他属性，需要放在装饰器中</li>
+</ul>
+<h2 id="二、使用"><a href="#二、使用" class="headerlink" title="二、使用"></a>二、使用</h2><p><code>vue-property-decorator</code> 主要提供了多个装饰器和一个函数:</p>
+<ul>
+<li>@Prop</li>
+<li>@PropSync</li>
+<li>@Model</li>
+<li>@Watch</li>
+<li>@Provide</li>
+<li>@Inject</li>
+<li>@ProvideReactive</li>
+<li>@InjectReactive</li>
+<li>@Emit</li>
+<li>@Ref</li>
+<li>@Component (由 vue-class-component 提供)</li>
+<li>Mixins (由 vue-class-component 提供)</li>
+</ul>
+<h3 id="Component"><a href="#Component" class="headerlink" title="@Component"></a>@Component</h3><p><code>Component</code>装饰器它注明了此类为一个<code>Vue</code>组件，因此即使没有设置选项也不能省略</p>
+<p>如果需要定义比如 <code>name</code>、<code>components</code>、<code>filters</code>、<code>directives</code>以及自定义属性，就可以在<code>Component</code>装饰器中定义，如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;<span class="title class_">Component</span>,<span class="title class_">Vue</span>&#125; <span class="keyword">from</span> <span class="string">&#x27;vue-property-decorator&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;componentA,componentB&#125; <span class="keyword">from</span> <span class="string">&#x27;@/components&#x27;</span>;</span><br><span class="line"></span><br><span class="line"> @<span class="title class_">Component</span>(&#123;</span><br><span class="line">    <span class="attr">components</span>:&#123;</span><br><span class="line">        componentA,</span><br><span class="line">        componentB,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">directives</span>: &#123;</span><br><span class="line">        <span class="attr">focus</span>: &#123;</span><br><span class="line">            <span class="comment">// 指令的定义</span></span><br><span class="line">            <span class="attr">inserted</span>: <span class="keyword">function</span> (<span class="params">el</span>) &#123;</span><br><span class="line">                el.<span class="title function_">focus</span>()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> <span class="title class_">YourCompoent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Vue</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="computed、data、methods"><a href="#computed、data、methods" class="headerlink" title="computed、data、methods"></a>computed、data、methods</h3><p>这里取消了组件的data和methods属性，以往data返回对象中的属性、methods中的方法需要直接定义在Class中，当做类的属性和方法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@<span class="title class_">Component</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> <span class="title class_">HelloDecorator</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Vue</span> &#123;</span><br><span class="line">    <span class="attr">count</span>: number = <span class="number">123</span> <span class="comment">// 类属性相当于以前的 data</span></span><br><span class="line"></span><br><span class="line">    <span class="title function_">add</span>(): number &#123; <span class="comment">// 类方法就是以前的方法</span></span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">count</span> + <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取计算属性</span></span><br><span class="line">    <span class="keyword">get</span> <span class="title function_">total</span>(): number &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">count</span> + <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置计算属性</span></span><br><span class="line">    <span class="keyword">set</span> <span class="title function_">total</span>(<span class="params">param:number</span>): <span class="keyword">void</span> &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">count</span> = param</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="props"><a href="#props" class="headerlink" title="@props"></a>@props</h3><p>组件接收属性的装饰器，如下使用：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;<span class="title class_">Component</span>,<span class="title class_">Vue</span>,<span class="title class_">Prop</span>&#125; <span class="keyword">from</span> vue-property-decorator;</span><br><span class="line"></span><br><span class="line">@<span class="title class_">Component</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> <span class="title class_">YourComponent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Vue</span> &#123;</span><br><span class="line">    @<span class="title class_">Prop</span>(<span class="title class_">String</span>)</span><br><span class="line">    <span class="attr">propA</span>:string;</span><br><span class="line"></span><br><span class="line">    @<span class="title class_">Prop</span>([<span class="title class_">String</span>,<span class="title class_">Number</span>])</span><br><span class="line">    <span class="attr">propB</span>:string|number;</span><br><span class="line"></span><br><span class="line">    @<span class="title class_">Prop</span>(&#123;</span><br><span class="line">     <span class="attr">type</span>: <span class="title class_">String</span>, <span class="comment">// type: [String , Number]</span></span><br><span class="line">     <span class="attr">default</span>: <span class="string">&#x27;default value&#x27;</span>, <span class="comment">// 一般为String或Number</span></span><br><span class="line">      <span class="comment">//如果是对象或数组的话。默认值从一个工厂函数中返回</span></span><br><span class="line">      <span class="comment">// defatult: () =&gt; &#123;</span></span><br><span class="line">      <span class="comment">//     return [&#x27;a&#x27;,&#x27;b&#x27;]</span></span><br><span class="line">      <span class="comment">// &#125;</span></span><br><span class="line">     <span class="attr">required</span>: <span class="literal">true</span>,</span><br><span class="line">     <span class="attr">validator</span>: <span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> [</span><br><span class="line">          <span class="string">&#x27;InProcess&#x27;</span>,</span><br><span class="line">          <span class="string">&#x27;Settled&#x27;</span></span><br><span class="line">        ].<span class="title function_">indexOf</span>(value) !== -<span class="number">1</span></span><br><span class="line">     &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="attr">propC</span>:string;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="watch"><a href="#watch" class="headerlink" title="@watch"></a>@watch</h3><p>实际就是<code>Vue</code>中的监听器，如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Vue</span>, <span class="title class_">Component</span>, <span class="title class_">Watch</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;vue-property-decorator&#x27;</span></span><br><span class="line"></span><br><span class="line">@<span class="title class_">Component</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> <span class="title class_">YourComponent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Vue</span> &#123;</span><br><span class="line">  @<span class="title class_">Watch</span>(<span class="string">&#x27;child&#x27;</span>)</span><br><span class="line">  <span class="title function_">onChildChanged</span>(<span class="params">val: string, oldVal: string</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  @<span class="title class_">Watch</span>(<span class="string">&#x27;person&#x27;</span>, &#123; <span class="attr">immediate</span>: <span class="literal">true</span>, <span class="attr">deep</span>: <span class="literal">true</span> &#125;)</span><br><span class="line">  <span class="title function_">onPersonChanged1</span>(<span class="params">val: Person, oldVal: Person</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  @<span class="title class_">Watch</span>(<span class="string">&#x27;person&#x27;</span>)</span><br><span class="line">  <span class="title function_">onPersonChanged2</span>(<span class="params">val: Person, oldVal: Person</span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="emit"><a href="#emit" class="headerlink" title="@emit"></a>@emit</h3><p><code>vue-property-decorator</code> 提供的 <code>@Emit</code> 装饰器就是代替<code>Vue</code>中的事件的触发<code>$emit</code>，如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;<span class="title class_">Vue</span>, <span class="title class_">Component</span>, <span class="title class_">Emit</span>&#125; <span class="keyword">from</span> <span class="string">&#x27;vue-property-decorator&#x27;</span>;</span><br><span class="line">    @<span class="title class_">Component</span>(&#123;&#125;)</span><br><span class="line">    <span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> <span class="title class_">Some</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Vue</span>&#123;</span><br><span class="line">        <span class="title function_">mounted</span>(<span class="params"></span>)&#123;</span><br><span class="line">            <span class="variable language_">this</span>.$on(<span class="string">&#x27;emit-todo&#x27;</span>, <span class="keyword">function</span>(<span class="params">n</span>) &#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(n)</span><br><span class="line">            &#125;)</span><br><span class="line">            <span class="variable language_">this</span>.<span class="title function_">emitTodo</span>(<span class="string">&#x27;world&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        @<span class="title class_">Emit</span>()</span><br><span class="line">        <span class="title function_">emitTodo</span>(<span class="params">n: string</span>)&#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;hello&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="三-、总结"><a href="#三-、总结" class="headerlink" title="三 、总结"></a>三 、总结</h2><p>可以看到上述<code>typescript</code>版本的<code>vue class</code>的语法与平时<code>javascript</code>版本使用起来还是有很大的不同，多处用到<code>class</code>与装饰器，但实际上本质是一致的，只有不断编写才会得心应手。</p>
+<hr>
+<blockquote>
+<p>基于hexo搭建的一个博客:<a target="_blank" rel="noopener" href="https://nanxiangscholar.github.io/">https://nanxiangscholar.github.io/</a></p>
+<p>欢迎访问!</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Nanxiangscholar
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2021/09/12/vue-typescript/" title="在Vue项目中应用TypeScript">http://example.com/2021/09/12/vue-typescript/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/typescript/" rel="tag"># typescript</a>
+              <a href="/tags/vue/" rel="tag"># vue</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/20/Storybook/" rel="prev" title="Storybook">
+      <i class="fa fa-chevron-left"></i> Storybook
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/09/23/web-attack/" rel="next" title="web常见的攻击方式">
+      web常见的攻击方式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%9C%A8Vue%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%BA%94%E7%94%A8TypeScript%EF%BC%9F"><span class="nav-text">如何在Vue项目中应用TypeScript？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80"><span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E4%BD%BF%E7%94%A8"><span class="nav-text">二、使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Component"><span class="nav-text">@Component</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#computed%E3%80%81data%E3%80%81methods"><span class="nav-text">computed、data、methods</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#props"><span class="nav-text">@props</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#watch"><span class="nav-text">@watch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#emit"><span class="nav-text">@emit</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89-%E3%80%81%E6%80%BB%E7%BB%93"><span class="nav-text">三 、总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Nanxiangscholar"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Nanxiangscholar</p>
+  <div class="site-description" itemprop="description">代码是敲出来的,不是看出来的!</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Nanxiangscholar" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Nanxiangscholar" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_58459674?spm=1000.2115.3001.5343" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_58459674?spm&#x3D;1000.2115.3001.5343" rel="noopener" target="_blank"><i class="crosshairs fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/394815057@qq.com" title="E-Mail → 394815057@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接(*推荐*一个大佬的博客)
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://found-404.github.io/found404.io/" title="https:&#x2F;&#x2F;found-404.github.io&#x2F;found404.io&#x2F;" rel="noopener" target="_blank">FØund404</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+     <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1404596131&auto=1&height=32"></iframe>
+        
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南巷书生</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">NaNm</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">NaN:aN</span>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  ((window.gitter = {}).chat = {}).options = {
+    room: 'Nanxiangscholar/community'
+  };
+</script>
+<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+</body>
+</html>
