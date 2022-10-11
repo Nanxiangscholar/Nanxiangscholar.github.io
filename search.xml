@@ -230,7 +230,7 @@ addDecorator((storyFn)=&gt;(
 </blockquote>
 ]]></content>
       <categories>
-        <category>Typescript</category>
+        <category>TypeScript</category>
         <category>React</category>
       </categories>
       <tags>
@@ -294,7 +294,7 @@ addDecorator((storyFn)=&gt;(
 </blockquote>
 ]]></content>
       <categories>
-        <category>Typescript</category>
+        <category>TypeScript</category>
         <category>vue</category>
       </categories>
       <tags>
@@ -744,7 +744,7 @@ addDecorator((storyFn)=&gt;(
 </ul>
 ]]></content>
       <categories>
-        <category>Typescript</category>
+        <category>TypeScript</category>
       </categories>
   </entry>
   <entry>
@@ -1371,7 +1371,7 @@ addDecorator((storyFn)=&gt;(
   <entry>
     <title>React自定义路由&amp;&amp;路由守卫</title>
     <url>/2022/10/08/routerShouWei/</url>
-    <content><![CDATA[<h1 id="React自定义路由以及路由守卫"><a href="#React自定义路由以及路由守卫" class="headerlink" title="React自定义路由以及路由守卫"></a>React自定义路由以及路由守卫</h1><p>react路由v6版本提供了和Vue相像的路由表，但是相比Vue还是少了一点东西。官方所谓的“提供更多自由度”好是好。但我觉得太高的自由度对于开发来说效率上会大大折扣。重复性的造轮子倒不如使用提供的。。。🤔</p>
+    <content><![CDATA[<h1 id="React自定义路由以及路由守卫"><a href="#React自定义路由以及路由守卫" class="headerlink" title="React自定义路由以及路由守卫"></a>React自定义路由以及路由守卫</h1><p>react路由v6版本提供了和Vue相像的路由表，但是相比Vue还是少了一点东西。官方所谓的“提供更多自由度”好是好。但我觉得太高的自由度对于开发来说效率上会大大折扣。重复性的造轮子倒不如使用提供的。。。</p>
 <span id="more"></span>
 
 <h2 id="Vue中的路由"><a href="#Vue中的路由" class="headerlink" title="Vue中的路由"></a>Vue中的路由</h2><p>Vue提供的现成的路由Api方便了对路由的监听，在这两个钩子中可以对路由进行常用的 <em>鉴权</em>  等操作…</p>
